@@ -3,11 +3,13 @@ services:
   - type: web
     name: keycloak
     env: docker
-    dockerfilePath: Dockerfile
     branch: main
-    # Variables de entorno para crear el usuario administrador
+    dockerfilePath: Dockerfile
+
+    # Admin user (no lo metas en el Dockerfile)
     envVars:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-    # Ruta para comprobar que el servicio está vivo
-    healthCheckPath: /health
+
+    # Ruta para el health check (dev-mode expone /)
+    healthCheckPath: /
