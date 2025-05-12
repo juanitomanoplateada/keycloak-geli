@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: keycloak-geli
+    env: docker
+    dockerfilePath: Dockerfile
+    staticPort: 8080
