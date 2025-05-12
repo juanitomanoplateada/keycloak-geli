@@ -1,5 +1,5 @@
 # Usa la imagen oficial de Keycloak
-FROM jboss/keycloak:latest
+FROM quay.io/keycloak/keycloak:latest
 
 # Copia el archivo del realm exportado al contenedor
 COPY realm/realm-export.json /opt/jboss/keycloak/standalone/configuration/
