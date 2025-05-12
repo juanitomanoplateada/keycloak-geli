@@ -7,5 +7,7 @@ COPY realm/realm-export.json /opt/keycloak/data/import/realm-export.json
 ENV KEYCLOAK_ADMIN=admin
 ENV KEYCLOAK_ADMIN_PASSWORD=adminpassword
 
+EXPOSE 8080
+
 # Comando de inicio con importación
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev", "--import-realm"]
