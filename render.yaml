@@ -1,6 +1,13 @@
+# render.yaml
 services:
   - type: web
-    name: keycloak-geli
+    name: keycloak
     env: docker
     dockerfilePath: Dockerfile
-    staticPort: 8080
+    branch: main
+    # Variables de entorno para crear el usuario administrador
+    envVars:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    # Ruta para comprobar que el servicio está vivo
+    healthCheckPath: /health
