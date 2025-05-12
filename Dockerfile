@@ -1,12 +1,11 @@
-FROM quay.io/keycloak/keycloak:latest
-COPY realm/realm-export.json /opt/keycloak/data/import/realm-export.json
+# Dockerfile
+FROM quay.io/keycloak/keycloak:21.1.1
 
-ENV KEYCLOAK_ADMIN=admin
-ENV KEYCLOAK_ADMIN_PASSWORD=adminpassword
+# Desactivar validación estricta de hostname (útil en entornos con host dinámico)
 ENV KC_HOSTNAME_STRICT=false
-ENV KC_PROXY=edge
 
+# Puerto expuesto por Keycloak
 EXPOSE 8080
 
-ENTRYPOINT [ "sh", "-c", \
-  "/opt/keycloak/bin/kc.sh start-dev --import-realm --http-port=${PORT:-8080}" ]
+# Arranque de Keycloak
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--hostname-strict=false", "--http-port=8080"]
