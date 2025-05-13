@@ -1,11 +1,11 @@
 FROM quay.io/keycloak/keycloak:26.2.0
 
-# ⬅️ Las variables de build-time deben estar aquí antes del build
+# Variables de entorno necesarias para build
 ENV KC_DB=postgres
-ENV KC_DB_URL_HOST=containers-us-east-123.railway.app
-ENV KC_DB_URL_DATABASE=railway
 ENV KC_DB_USERNAME=postgres
 ENV KC_DB_PASSWORD=whslSwSWKVgWzbbimkVIByhEZOyLGjSk
+ENV KC_DB_URL_HOST=postgres.railway.internal
+ENV KC_DB_URL_DATABASE=railway
 
 ENV KC_HEALTH_ENABLED=true
 ENV KC_METRICS_ENABLED=true
@@ -15,4 +15,4 @@ RUN /opt/keycloak/bin/kc.sh build
 
 EXPOSE 8080
 
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--http-enabled=true", "--hostname-strict=false", "--optimized"]
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--http-enabled=true", "--hostname-strict=false", "--proxy=edge", "--optimized"]
