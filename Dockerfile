@@ -4,10 +4,11 @@ ENV KC_HEALTH_ENABLED=true
 ENV KC_METRICS_ENABLED=true
 ENV KC_LOG_LEVEL=INFO
 
-WORKDIR /opt/keycloak
+# (Opcional) Si deseas importar un realm
+# COPY realm-export.json /opt/keycloak/data/import/realm-export.json
 
 RUN /opt/keycloak/bin/kc.sh build
 
 EXPOSE 8080
 
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start"]
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--http-enabled=true", "--hostname-strict=false"]
