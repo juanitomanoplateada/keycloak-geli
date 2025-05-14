@@ -1,16 +1,19 @@
 FROM quay.io/keycloak/keycloak:26.2.0
 
-# Usuario admin (configurado en tiempo de ejecución por Railway)
+# Instala el driver JDBC de PostgreSQL
+RUN microdnf install -y postgresql-jdbc
+
+# Establece variables del administrador
 ENV KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
 ENV KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
 
-# Build con argumentos en tiempo de build (no en runtime)
+# Compila Keycloak con los argumentos de build necesarios
 RUN /opt/keycloak/bin/kc.sh build \
-    --db=postgres \
-    --features=token-exchange \
-    --health-enabled=true \
-    --metrics-enabled=false
+  --db=postgres \
+  --features=token-exchange \
+  --health-enabled=true \
+  --metrics-enabled=false
 
-# Iniciar el servidor con las configuraciones ya persistidas en el build
+# Comando de ejecución optimizado
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
-CMD ["start"]
+CMD ["start", "--optimized"]
