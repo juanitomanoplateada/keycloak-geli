@@ -10,6 +10,12 @@ ENV KC_DB=postgres \
 ENV KEYCLOAK_ADMIN=admin \
     KEYCLOAK_ADMIN_PASSWORD=admin
 
-# 3) Arranca en modo desarrollo, HTTP interno y proxy de Railway
+# 3) Configuración para que Keycloak en dev mode lea estas vars
+ENV KC_HTTP_ENABLED=true \
+    KC_PROXY=edge \
+    KC_HOSTNAME=https://keycloak-geli-production.up.railway.app \
+    KC_HOSTNAME_STRICT=false
+
+# 4) Arranca en modo desarrollo (más permisivo)
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
-CMD ["start-dev", "--http-enabled", "--hostname", "keycloak-geli-production.up.railway.app", "--proxy", "edge"]
+CMD ["start-dev"]
