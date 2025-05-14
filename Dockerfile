@@ -11,9 +11,12 @@ ENV KEYCLOAK_ADMIN_PASSWORD=admin
 ENV KC_HEALTH_ENABLED=true
 ENV KC_METRICS_ENABLED=true
 ENV KC_HTTP_ENABLED=true
+ENV KC_PROXY=edge
+ENV KC_HOSTNAME=keycloak-geli-production.up.railway.app
+ENV KC_HOSTNAME_STRICT=false
+
 ENV JAVA_OPTS_APPEND="-XX:+UseContainerSupport"
 
-# Compila Keycloak para producción (necesario antes del start --optimized)
 RUN /opt/keycloak/bin/kc.sh build
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
