@@ -1,23 +1,15 @@
 FROM quay.io/keycloak/keycloak:26.2.0
 
-# 1. Base de datos
-ENV KC_DB=postgres
-ENV KC_DB_URL=jdbc:postgresql://postgres.railway.internal:5432/railway
-ENV KC_DB_USERNAME=postgres
-ENV KC_DB_PASSWORD=whslSwSWKVgWzbbimkVIByhEZOyLGjSk
+# 1) Base de datos PostgreSQL de Railway
+ENV KC_DB=postgres \
+    KC_DB_URL=jdbc:postgresql://postgres.railway.internal:5432/railway \
+    KC_DB_USERNAME=postgres \
+    KC_DB_PASSWORD=whslSwSWKVgWzbbimkVIByhEZOyLGjSk
 
-# 2. Admin user
-ENV KEYCLOAK_ADMIN=admin
-ENV KEYCLOAK_ADMIN_PASSWORD=admin
+# 2) Admin user
+ENV KEYCLOAK_ADMIN=admin \
+    KEYCLOAK_ADMIN_PASSWORD=admin
 
-# 3. Build para producción
-RUN /opt/keycloak/bin/kc.sh build
-
+# 3) Arranca en modo desarrollo, HTTP interno y proxy de Railway
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
-CMD [
-  "start", 
-  "--optimized",
-  "--http-enabled", 
-  "--hostname", "keycloak-geli-production.up.railway.app",
-  "--proxy", "edge"
-]
+CMD ["start-dev", "--http-enabled", "--hostname", "keycloak-geli-production.up.railway.app", "--proxy", "edge"]
