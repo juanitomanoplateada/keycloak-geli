@@ -1,16 +1,15 @@
-# Usa la imagen oficial de Keycloak versión 26.2.0
 FROM quay.io/keycloak/keycloak:26.2.0
 
-# Habilita el modo de inicio sin configuración interactiva
+# Variables de entorno necesarias (Railway las inyecta en tiempo de ejecución)
 ENV KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
 ENV KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
 
-# Copia el realm de exportación si lo tienes
-# Descomenta si tienes un archivo realm-export.json en el repo
+# Copiar opcionalmente el realm de exportación si lo tienes
 # COPY realm-export.json /opt/keycloak/data/import/
 
-# Comando para iniciar Keycloak en modo optimizado con importación de realm (si lo deseas)
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
+# Construir la imagen en tiempo de build para producción (build antes de start)
+RUN /opt/keycloak/bin/kc.sh build
 
-# Argumentos por defecto, puede modificarse en Railway → Variables
-CMD ["start", "--optimized", "--import-realm"]
+# Ejecutar Keycloak optimizado
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
+CMD ["start", "--optimized"]
