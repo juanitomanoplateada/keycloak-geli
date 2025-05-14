@@ -1,15 +1,15 @@
 FROM quay.io/keycloak/keycloak:26.2.0
 
-# Variables de entorno necesarias (Railway las inyecta en tiempo de ejecución)
+# Variables de entorno (Railway las inyecta en tiempo de ejecución)
 ENV KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
 ENV KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
 
-# Copiar opcionalmente el realm de exportación si lo tienes
+# (Opcional) Importar realm si tienes realm-export.json
 # COPY realm-export.json /opt/keycloak/data/import/
 
-# Construir la imagen en tiempo de build para producción (build antes de start)
+# Construcción obligatoria antes de usar --optimized
 RUN /opt/keycloak/bin/kc.sh build
 
-# Ejecutar Keycloak optimizado
+# Comando de arranque
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
 CMD ["start", "--optimized"]
