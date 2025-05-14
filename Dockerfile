@@ -1,19 +1,24 @@
+# Usa la imagen oficial de Keycloak 26.2.0
 FROM quay.io/keycloak/keycloak:26.2.0
 
-# Descargar manualmente el driver JDBC de PostgreSQL
-ADD https://jdbc.postgresql.org/download/postgresql-42.7.3.jar /opt/keycloak/providers/
+# Copia archivos opcionales (por ejemplo, realm.json) si los necesitas
+# COPY ./realm-export.json /opt/keycloak/data/import/
 
-# Variables admin
-ENV KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
-ENV KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+# Activa el modo optimizado para producción
+ENV KC_HEALTH_ENABLED=true
+ENV KC_METRICS_ENABLED=true
+ENV JAVA_OPTS_APPEND="-XX:+UseContainerSupport"
 
-# Compilar el servidor con PostgreSQL y features requeridas
-RUN /opt/keycloak/bin/kc.sh build \
-  --db=postgres \
-  --features=token-exchange \
-  --health-enabled=true \
-  --metrics-enabled=false
+# Si estás usando PostgreSQL como base de datos
+ENV KC_DB=postgres
+ENV KC_DB_URL=jdbc:postgresql://db:5432/keycloak
+ENV KC_DB_USERNAME=keycloak
+ENV KC_DB_PASSWORD=keycloak
 
-# Ejecutar el servidor
+# Usuario y contraseña del administrador
+ENV KEYCLOAK_ADMIN=admin
+ENV KEYCLOAK_ADMIN_PASSWORD=admin
+
+# Comando de inicio
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
 CMD ["start", "--optimized"]
