@@ -1,4 +1,3 @@
-# Dockerfile para Railway – Keycloak 26.2.0
 FROM quay.io/keycloak/keycloak:26.2.0
 
 ENV KC_DB=postgres
@@ -11,11 +10,11 @@ ENV KEYCLOAK_ADMIN_PASSWORD=admin
 
 ENV KC_HEALTH_ENABLED=true
 ENV KC_METRICS_ENABLED=true
+ENV KC_HTTP_ENABLED=true
 ENV JAVA_OPTS_APPEND="-XX:+UseContainerSupport"
 
-# Paso obligatorio para modo optimizado: construir antes de iniciar
+# Compila Keycloak para producción (necesario antes del start --optimized)
 RUN /opt/keycloak/bin/kc.sh build
 
-# Inicio en modo optimizado
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
 CMD ["start", "--optimized"]
